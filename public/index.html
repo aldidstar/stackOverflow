@@ -80,22 +80,25 @@
       <br />
 
       <div class="total-question">
-        <div  class="row">
+        <div class="row">
           <h5 class="col-9">1000 question</h5>
           <div class="col-3">
             <div
               class="btn-group"
               role="group"
               aria-label="Basic checkbox toggle button group"
-              style="height: 27px; width: 15px;"
+              style="height: 27px; width: 15px"
             >
-              <input 
+              <input
                 type="checkbox"
                 class="btn-check"
                 id="btncheck1"
                 autocomplete="off"
               />
-              <label style="font-size: 12px;" class="btn btn-outline-primary" for="btncheck1"
+              <label
+                style="font-size: 12px"
+                class="btn btn-outline-primary"
+                for="btncheck1"
                 >Viewer</label
               >
 
@@ -105,7 +108,10 @@
                 id="btncheck2"
                 autocomplete="off"
               />
-              <label style="font-size: 12px;" class="btn btn-outline-primary" for="btncheck2"
+              <label
+                style="font-size: 12px"
+                class="btn btn-outline-primary"
+                for="btncheck2"
                 >Answer</label
               >
 
@@ -115,7 +121,10 @@
                 id="btncheck3"
                 autocomplete="off"
               />
-              <label style="font-size: 12px;" class="btn btn-outline-primary" for="btncheck3"
+              <label
+                style="font-size: 12px"
+                class="btn btn-outline-primary"
+                for="btncheck3"
                 >Votes</label
               >
             </div>
@@ -148,25 +157,36 @@
             >
           </div>
           <br />
-          <div class="tag-editor">
-            <ul class="tags">
-              <li class="addedTag">
-                Web Develop<span
-                  onclick="$(this).parent().remove();"
-                  class="tagRemove"
-                  >x</span
-                ><input type="hidden" name="tags[]" value="Web Develop" />
-              </li>
-              <li class="addedTag">
-                SEO<span onclick="$(this).parent().remove();" class="tagRemove"
-                  >x</span
-                ><input type="hidden" name="tags[]" value="SEO" />
-              </li>
-              <li class="tagAdd taglist">
-                <input type="text" id="search-field" />
-              </li>
-            </ul>
-          </div>
+          <div class="row">
+           
+            <div class="col-sm-9">
+              <div class="tag-editor">
+                <ul class="tags">
+                  <li class="addedTag">
+                    Web Develop<span
+                      onclick="$(this).parent().remove();"
+                      class="tagRemove"
+                      >x</span
+                    ><input type="hidden" name="tags[]" value="Web Develop" />
+                  </li>
+                  <li class="addedTag">
+                    SEO<span
+                      onclick="$(this).parent().remove();"
+                      class="tagRemove"
+                      >x</span
+                    ><input type="hidden" name="tags[]" value="SEO" />
+                  </li>
+                  <li class="tagAdd taglist">
+                    <input type="text" id="search-field" />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-2">
+                <p>asked by user</p>
+            </div>
+        </div>
+        
         </div>
       </div>
     </div>
