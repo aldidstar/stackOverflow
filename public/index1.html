@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      href="/stylesheets/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+
+  <body>
+    <nav
+      style="border-bottom: 1px solid rgb(221, 217, 217)"
+      class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Stack Overflow</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Products</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#" tabindex="-1">For Team</a>
+            </li>
+            <li>
+              <form style="height: 35px" class="d-flex">
+                <input
+                  style="width: 650px"
+                  class="s-input s-input__search js-search-field"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                />
+              </form>
+            </li>
+          </ul>
+
+          <button
+            style="margin-right: 10px"
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Login
+          </button>
+
+          <button class="btn btn-primary" type="button">Signup</button>
+        </div>
+      </div>
+    </nav>
+
+    <br />
+
+    <div class="container-fluid">
+      <br /><br />
+      <div class="total-question">
+        <h5 class="col-sm-11">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque facere
+          ratione cupiditate est ducimus a pariatur explicabo nostrum obcaecati
+          quasi!
+        </h5>
+      </div>
+      <br /><br />
+      <div class="row">
+        <div class="col-sm-2">
+          <p><i class="fas fa-angle-double-up"></i></p>
+          <p>0</p>
+          <p><i class="fas fa-angle-double-down"></i></p>
+        </div>
+        <div class="col-sm-9">
+          <div class="list-question">
+            <a
+              >Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Cupiditate excepturi nostrum consequatur ut explicabo provident
+              veniam voluptatibus suscipit autem repellendus laborum tenetur
+              dolorum, ratione laudantium enim harum blanditiis voluptate
+              molestias. Vero libero soluta optio, earum fugit harum? Ad, ea
+              modi? Est, aliquam suscipit ratione facilis adipisci officia
+              cumque ipsam iusto.</a
+            >
+          </div>
+          <br />
+          <div class="tag-editor">
+            <ul class="tags">
+              <li class="addedTag">
+                Web Develop<span
+                  onclick="$(this).parent().remove();"
+                  class="tagRemove"
+                  >x</span
+                ><input type="hidden" name="tags[]" value="Web Develop" />
+              </li>
+              <li class="addedTag">
+                SEO<span onclick="$(this).parent().remove();" class="tagRemove"
+                  >x</span
+                ><input type="hidden" name="tags[]" value="SEO" />
+              </li>
+              <li class="tagAdd taglist">
+                <input type="text" id="search-field" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <textarea name="editor1" id="editor1" rows="10" cols="80"> </textarea>
+    <script src="ckeditor/ckeditor.js"></script>
+    <script>
+      CKEDITOR.replace("editor1");
+    </script>
+  </body>
+</html>
