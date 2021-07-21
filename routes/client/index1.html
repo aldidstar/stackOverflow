@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
-  <body>
+  <body onload="loadData()">
     <nav
       style="border-bottom: 1px solid rgb(221, 217, 217)"
       class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
@@ -65,23 +65,87 @@
             class="btn btn-outline-primary"
             type="button"
           >
-            Login
+          <a style="text-decoration: none; color: blue;"  href="/login.html">Login</a>
           </button>
 
-          <button class="btn btn-primary" type="button">Signup</button>
+          <button class="btn btn-primary" type="button"><a style="text-decoration: none; color: white;"  href="/register.html">Signup</a></button>
         </div>
       </div>
     </nav>
 
     <br />
 
-    <div class="container-fluid">
-      <br /><br />
-      <div class="total-question">
+    <div id="question1" class="container-fluid"><br /><br /></div>
+    <br>
+    <p> 25 Answer </p>
+    
+    <div id="question2" class="container-fluid"><br /><br /></div>
+    <button id="btn-add" class="btn btn-primary">Add Answer</button>
+    <form id="form-question"  style="display: none">
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          required
+          name="description"
+          id="description"
+          rows="10"
+          cols="80"
+        >
+        </textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button id="btn-cancel" type="button" class="btn btn-warning">
+        <i class="fas fa-minus"></i>
+      </button>
+    </form>
+    <script src="ckeditor/ckeditor.js"></script>
+    <script>
+      CKEDITOR.replace("description");
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        loadData();
+        loadData2()
+        $("#form-question").submit(function (event) {
+          event.preventDefault();
+          saveData();
+          $("#form-question").hide();
+          $("#btn-add").show();
+          $("#form-question").trigger("reset");
+
+        });
+        $("#btn-add").click(function () {
+          $("#form-question").show();
+          $(this).hide();
+          
+        });
+
+        $("#btn-cancel").click(function () {
+          $("#form-question").hide();
+          $("#btn-add").show();
+        
+        });
+        });
+        
+   
+
+      function loadData() {
+        let id = localStorage.getItem("idselection");
+        
+        let html = "";
+        $.ajax({
+          method: "GET",
+          url: `http://localhost:3000/question/${id}`,
+          dataType: "json",
+        }).done(function (data) {
+         
+          // data.forEach((item) => {
+
+          html += ` <div class="total-question">
         <h5 class="col-sm-11">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque facere
-          ratione cupiditate est ducimus a pariatur explicabo nostrum obcaecati
-          quasi!
+          ${data[0].title}
         </h5>
       </div>
       <br /><br />
@@ -94,17 +158,11 @@
         <div class="col-sm-9">
           <div class="list-question">
             <a
-              >Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Cupiditate excepturi nostrum consequatur ut explicabo provident
-              veniam voluptatibus suscipit autem repellendus laborum tenetur
-              dolorum, ratione laudantium enim harum blanditiis voluptate
-              molestias. Vero libero soluta optio, earum fugit harum? Ad, ea
-              modi? Est, aliquam suscipit ratione facilis adipisci officia
-              cumque ipsam iusto.</a
+              >${data[0].description}</a
             >
           </div>
           <br />
-          <div class="tag-editor">
+          <div class="tag-editor1">
             <ul class="tags">
               <li class="addedTag">
                 Web Develop<span
@@ -124,13 +182,63 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
+      </div>`;
+          // });
+          $("#question1").html(html);
+        });
+      }
 
-    <textarea name="editor1" id="editor1" rows="10" cols="80"> </textarea>
-    <script src="ckeditor/ckeditor.js"></script>
-    <script>
-      CKEDITOR.replace("editor1");
+      function saveData() {
+        let id = localStorage.getItem("idselection");
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:3000/answer",
+          data: {
+            description: CKEDITOR.instances.description.getData(),
+            QuestionId: id
+          },
+        }).done(function (msg) {
+          $("#form-question").trigger("reset");
+          loadData();
+          loadData2();
+        });
+      }
+
+      function loadData2() {
+        let id = localStorage.getItem("idselection");
+        $.ajax({
+          method: "GET",
+          url: `http://localhost:3000/answer/${id}`,
+          dataType: "json",
+        }).done(function (data) {
+          console.log(data);
+          let html = "";
+
+          data.forEach((item) => {
+            html += ` <div class="total-question">
+       
+      </div>
+      <br /><br />
+      <div class="row">
+        <div class="col-sm-2">
+          <p><i class="fas fa-angle-double-up"></i></p>
+          <p>0</p>
+          <p><i class="fas fa-angle-double-down"></i></p>
+        </div>
+        <div class="col-sm-9">
+          <div class="list-question">
+            <a
+              >${item.description}</a
+            >
+          </div>
+          <br />
+         
+        </div>
+      </div> `;
+    });
+    $("#question2").html(html);
+        });
+      }
     </script>
   </body>
 </html>

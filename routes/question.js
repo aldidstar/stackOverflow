@@ -38,4 +38,16 @@ router.delete('/:id', function(req, res) {
   });
 });
 
+router.get('/:id', function(req, res) {
+  models.Question.findAll({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(question) {
+    res.json(question);
+  });
+});
+
+
+
 module.exports = router;

@@ -65,10 +65,10 @@
             class="btn btn-outline-primary"
             type="button"
           >
-            Login
+          <a style="text-decoration: none; color: blue;"  href="/login.html">Login</a>
           </button>
 
-          <button class="btn btn-primary" type="button">Signup</button>
+       <button  class="btn btn-primary" type="button"> <a style="text-decoration: none; color: white;"  href="/register.html">Signup</a>  </button>
         </div>
       </div>
     </nav>
@@ -137,7 +137,8 @@
       </div>
     </div>
     <br />
-    <form id="form-question">
+    <button id="btn-add" class="btn btn-primary">Add Question</button>
+    <form id="form-question" style="display: none">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -163,6 +164,9 @@
       <button type="submit" class="btn btn-primary">
         <i class="fas fa-plus"></i>
       </button>
+      <button id="btn-cancel" type="button" class="btn btn-warning">
+        <i class="fas fa-minus"></i>
+      </button>
     </form>
     <script src="ckeditor/ckeditor.js"></script>
     <script>
@@ -174,7 +178,29 @@
         $("#form-question").submit(function (event) {
           event.preventDefault();
           saveData();
+          $("#form-question").hide();
+          $("#btn-add").show();
+          $("#form-question").trigger("reset");
+
         });
+        $("#btn-add").click(function () {
+          $("#form-question").show();
+          $(this).hide();
+          
+        });
+
+        $("#btn-cancel").click(function () {
+          $("#form-question").hide();
+          $("#btn-add").show();
+        
+        });
+        $("#question").on("click", ".title", function(event){
+          event.preventDefault()
+          let id = $(this).attr("iddata")
+          localStorage.setItem("idselection", id)
+          window.location = "/index1.html"
+
+        } )
       });
 
       function loadData() {
@@ -184,6 +210,7 @@
           dataType: "json",
         }).done(function (data) {
           let html = "";
+        
           data.forEach((item) => {
             html += ` 
             <div id="border-question" class="col-sm-2">
@@ -193,7 +220,7 @@
         </div>
         <div class="col-sm-9">
           <div id="list-question">
-            <a class="title" href="index1.html"><h6>${item.title}</h6></a>
+            <a class="title" iddata = ${item.id}  href="#"><h6>${item.title}</h6></a>
 
             <br />
 

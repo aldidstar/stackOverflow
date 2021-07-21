@@ -1,4 +1,6 @@
 'use strict';
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 const {
   Model
 } = require('sequelize');
@@ -21,5 +23,26 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeSave((user, options) => {
+
+    return bcrypt.hash(user.password, 10)
+        .then(hash => {
+            user.password = hash;
+        })
+        .catch(err => { 
+            throw new Error(); 
+        });
+});
+
+User.prototype.validatePassword = function (password, cb) {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
+      if (err) return cb(err); 
+
+      cb(null, isMatch);
+  });
+};
+
+
   return User;
 };
