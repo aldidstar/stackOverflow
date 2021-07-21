@@ -34,4 +34,14 @@ router.post("/", function (req, res) {
     });
 });
 
+router.delete('/:id', function(req, res) {
+  models.Answer.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(answers) {
+    res.json(answers);
+  });
+});
+
 module.exports = router;
