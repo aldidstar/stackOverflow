@@ -24,7 +24,7 @@ router.post("/", function (req, res) {
     title: "",
     description: req.body.description,
     tag: {},
-    vote: { count: 0, countMin:0, voter: [] },
+    vote: { count: 0, voter: [] },
     QuestionId: req.body.QuestionId,
   })
     .then(function (answers) {
@@ -47,28 +47,49 @@ router.delete("/:id", function (req, res) {
 
 router.put("/vote", helpers.verifyToken, function (req, res) {
   const { id, name } = jwt.decode(req.headers["x-access-token"]);
-  console.log();
+  console.log(req.body.isUp)
   models.Answer.findOne({
     where: {
       id: req.body.idAnswer,
     },
   }).then((answer) => {
-    if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
-      answer.vote = {
-        count: answer.vote.count + 1,
-        countMin: answer.vote.count - 1,
-        voter: [...answer.vote.voter, { id, name }],
-      };
-      console.log(answer);
-      answer.save();
-      res.json({
-        success: true,
-      });
-    } else {
-      res.json({
-        success: false,
-        message: 'anda sudah vote'
-      });
+    if (req.body.isUp == true) {
+      if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
+        answer.vote = {
+          count: answer.vote.count + 1,
+
+          voter: [...answer.vote.voter, { id, name }],
+        };
+        console.log(answer);
+        answer.save();
+        res.json({
+          success: true,
+        });
+      } else {
+        res.json({
+          success: false,
+          message: "anda sudah vote",
+        });
+      }
+    }
+    else {
+      if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
+        answer.vote = {
+          count: answer.vote.count --,
+
+          voter: [...answer.vote.voter, { id, name }],
+        };
+        console.log(answer);
+        answer.save();
+        res.json({
+          success: true,
+        });
+      } else {
+        res.json({
+          success: false,
+          message: "anda sudah vote",
+        });
+      }
     }
   });
 });
