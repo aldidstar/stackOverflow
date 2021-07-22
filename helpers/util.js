@@ -28,4 +28,8 @@ module.exports = {
       });
     }
   },
+  decodeToken: function(token){
+    var decoded = jwt.decode(token);
+    return decoded;
+  }
 };

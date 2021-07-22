@@ -16,24 +16,60 @@
     />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
-<body>
-  <form action="">
-    <h1 style="font-size:50px;" class="h3 mb-3 fw-normal">Stack Overflow</h1>
-    <div class="form-floating">
-      <input required type="text" name="name" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Name</label>
+  <body>
+    <div id="register">
+      <form id="form-register" >
+        <h1 style="font-size:50px;" class="h3 mb-3 fw-normal">Stack Overflow</h1>
+        <div class="form-floating">
+          <input required type="text" name="name" class="form-control" id="name" placeholder="name@example.com">
+          <label for="floatingInput">Name</label>
+        </div>
+      <div class="form-floating">
+        <input required type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input required type="password" name="password" class="form-control" id="password" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+    
+      <br>
+      <button  class="w-100 btn btn-lg btn-primary" type="submit"><a style="text-decoration: none; color: white;"  class="register" href="/login.html">Register</a>
+    </button>
+    </form>
     </div>
-  <div class="form-floating">
-    <input required type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-    <label for="floatingInput">Email address</label>
-  </div>
-  <div class="form-floating">
-    <input required type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-    <label for="floatingPassword">Password</label>
-  </div>
+    <script type="text/javascript">
+      $(document).ready(function () {
+     
+        $("#form-register").submit(function (event) {
+          event.preventDefault();
+          register();
+        });
+        
+      });
 
-  <br>
-  <button  class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
-</form>
-</body>
+      
+
+      function register() {
+        const name = $("#name").val();
+        const email = $("#email").val();
+        const password = $("#password").val();
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:3000/users",
+          data: {
+            name,
+            email,
+            password,
+          },
+        }).done(function (data) {
+          window.location = '/login.html'
+        });
+        
+        
+      }
+
+      
+    </script>
+  </body>
 </html>

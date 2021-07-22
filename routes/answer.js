@@ -1,14 +1,15 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var models = require('../models/index');
+var models = require("../models/index");
+const helpers = require("../helpers/util");
+// const { json } = require('sequelize/types');
+var jwt = require("jsonwebtoken");
 
-
-
-router.get("/:QuestionId", function (req, res, next) {
+router.get("/:QuestionId", helpers.verifyToken, function (req, res, next) {
   models.Answer.findAll({
     where: {
-      QuestionId: req.params.QuestionId
-    }
+      QuestionId: req.params.QuestionId,
+    },
   })
     .then(function (answers) {
       res.json(answers);
@@ -20,11 +21,11 @@ router.get("/:QuestionId", function (req, res, next) {
 
 router.post("/", function (req, res) {
   models.Answer.create({
-    title: '',
+    title: "",
     description: req.body.description,
     tag: {},
-    vote: {},
-    QuestionId: req.body.QuestionId
+    vote: { count: 0, voter: [] },
+    QuestionId: req.body.QuestionId,
   })
     .then(function (answers) {
       res.status(201).json({ answers });
@@ -34,13 +35,40 @@ router.post("/", function (req, res) {
     });
 });
 
-router.delete('/:id', function(req, res) {
+router.delete("/:id", function (req, res) {
   models.Answer.destroy({
     where: {
-      id: req.params.id
-    }
-  }).then(function(answers) {
+      id: req.params.id,
+    },
+  }).then(function (answers) {
     res.json(answers);
+  });
+});
+
+router.put("/vote", helpers.verifyToken, function (req, res) {
+  const { id, name } = jwt.decode(req.headers["x-access-token"]);
+  console.log();
+  models.Answer.findOne({
+    where: {
+      id: req.body.idAnswer,
+    },
+  }).then((answer) => {
+    if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
+      answer.vote = {
+        count: answer.vote.count + 1,
+        voter: [...answer.vote.voter, { id, name }],
+      };
+      console.log(answer);
+      answer.save();
+      res.json({
+        success: true,
+      });
+    } else {
+      res.json({
+        success: false,
+        message: 'anda sudah vote'
+      });
+    }
   });
 });
 

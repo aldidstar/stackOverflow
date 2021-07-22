@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models/index");
+const helpers = require("../helpers/util")
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", helpers.verifyToken, function (req, res, next) {
   models.Question.findAll({})
     .then(function (questions) {
       res.json(questions);
@@ -38,8 +39,8 @@ router.delete('/:id', function(req, res) {
   });
 });
 
-router.get('/:id', function(req, res) {
-  models.Question.findAll({
+router.get('/:id', helpers.verifyToken, function(req, res) {
+  models.Question.findOne({
     where: {
       id: req.params.id
     }

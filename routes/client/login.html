@@ -16,19 +16,72 @@
     />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
-<body>
-  <form action="">
-    <h1 style="font-size:50px;" class="h3 mb-3 fw-normal">Stack Overflow</h1>
-  <div class="form-floating">
-    <input required type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-    <label for="floatingInput">Email address</label>
-  </div>
-  <div class="form-floating">
-    <input required type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-    <label for="floatingPassword">Password</label>
-  </div>
- <br>
-  <button  class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
-</form>
-</body>
+  <body>
+    <div id="login">
+      <form id="form-login">
+        <h1 style="font-size: 50px" class="h3 mb-3 fw-normal">
+          Stack Overflow
+        </h1>
+        <div class="form-floating">
+          <input
+            required
+            type="email"
+            name="email"
+            class="form-control"
+            id="email"
+            placeholder="name@example.com"
+          />
+          <label for="email">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input
+            required
+            type="password"
+            name="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+          />
+          <label for="password">Password</label>
+        </div>
+        <br />
+        <button
+          id="btn-login"
+          class="w-100 btn btn-lg btn-primary"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#form-login").submit(function (event) {
+          event.preventDefault();
+          login();
+        });
+      });
+      
+      function login() {
+        const email = $("#email").val();
+        const password = $("#password").val();
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:3000/users/authenticate",
+          data: {
+            email,
+            password,
+          },
+        }).done(function (data) {
+          if (data.success) {
+            localStorage.setItem("token", data.token);
+            window.location = "/index.html";
+          }
+          else {
+            alert('login gagal')
+          }
+        });
+      }
+    </script>
+  </body>
 </html>

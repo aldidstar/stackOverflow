@@ -3,10 +3,15 @@ var router = express.Router();
 var models = require("../models/index");
 const secretKey = "aldi";
 var jwt = require('jsonwebtoken');
+const helpers = require("../helpers/util")
 
 /* GET users listing. */
-router.get("/", function (req, res) {
-  models.User.findAll({})
+router.get("/", helpers.verifyToken, function (req, res) {
+  models.User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  })
     .then(function (users) {
       res.json(users);
     })
@@ -44,6 +49,8 @@ router.post("/authenticate", function (req, res) {
     {
       where: {
         email: req.body.email,
+       
+       
       },
     }).then(
     function (user) {
@@ -67,6 +74,7 @@ router.post("/authenticate", function (req, res) {
         var token = jwt.sign(
           {
             name: user.name,
+            id: user.id
           },
           secretKey,
           { expiresIn: 60 * 60 }
@@ -88,5 +96,7 @@ router.post("/authenticate", function (req, res) {
 
   })
 });
+
+
 
 module.exports = router;

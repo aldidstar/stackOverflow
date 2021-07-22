@@ -65,10 +65,16 @@
             class="btn btn-outline-primary"
             type="button"
           >
-          <a style="text-decoration: none; color: blue;"  href="/login.html">Login</a>
+            <a style="text-decoration: none; color: blue" href="/login.html"
+              >Login</a
+            >
           </button>
 
-          <button class="btn btn-primary" type="button"><a style="text-decoration: none; color: white;"  href="/register.html">Signup</a></button>
+          <button class="btn btn-primary" type="button">
+            <a style="text-decoration: none; color: white" href="/register.html"
+              >Signup</a
+            >
+          </button>
         </div>
       </div>
     </nav>
@@ -76,12 +82,12 @@
     <br />
 
     <div id="question1" class="container-fluid"><br /><br /></div>
-    <br>
-    <p> 25 Answer </p>
-    
+    <br />
+    <p>25 Answer</p>
+
     <div id="question2" class="container-fluid"><br /><br /></div>
     <button id="btn-add" class="btn btn-primary">Add Answer</button>
-    <form id="form-question"  style="display: none">
+    <form id="form-question" style="display: none">
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea
@@ -107,58 +113,75 @@
     <script type="text/javascript">
       $(document).ready(function () {
         loadData();
-        loadData2()
+        loadData2();
+
+        $("#question2").on("click", ".voteup", function (e) {
+          e.preventDefault();
+
+          $.ajax({
+            method: "PUT",
+            url: `http://localhost:3000/answer/vote`,
+            data: {idAnswer: $(this).attr("dataid")},
+            dataType: "json",
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }).done(function (data) {
+            if(data.success){
+              alert("berhasil vote")
+              loadData2()
+            }
+            else {
+              alert(data.message)
+            }
+          });
+        });
+
         $("#form-question").submit(function (event) {
           event.preventDefault();
           saveData();
           $("#form-question").hide();
           $("#btn-add").show();
           $("#form-question").trigger("reset");
-
         });
+
         $("#btn-add").click(function () {
           $("#form-question").show();
           $(this).hide();
-          
         });
 
         $("#btn-cancel").click(function () {
           $("#form-question").hide();
           $("#btn-add").show();
-        
         });
-        });
-        
-   
+      });
 
       function loadData() {
         let id = localStorage.getItem("idselection");
-        
+
         let html = "";
         $.ajax({
           method: "GET",
           url: `http://localhost:3000/question/${id}`,
           dataType: "json",
-        }).done(function (data) {
-         
+          headers: { "x-access-token": localStorage.getItem("token") },
+        }).done(function (item) {
           // data.forEach((item) => {
 
           html += ` <div class="total-question">
         <h5 class="col-sm-11">
-          ${data[0].title}
+
         </h5>
       </div>
       <br /><br />
       <div class="row">
         <div class="col-sm-2">
-          <p><i class="fas fa-angle-double-up"></i></p>
-          <p>0</p>
-          <p><i class="fas fa-angle-double-down"></i></p>
+          <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <p>${item.id}</p>
+          <a href="#"><i class="fas fa-angle-double-down"></i></a>
         </div>
         <div class="col-sm-9">
           <div class="list-question">
             <a
-              >${data[0].description}</a
+              >${item.description}</a
             >
           </div>
           <br />
@@ -195,7 +218,7 @@
           url: "http://localhost:3000/answer",
           data: {
             description: CKEDITOR.instances.description.getData(),
-            QuestionId: id
+            QuestionId: id,
           },
         }).done(function (msg) {
           $("#form-question").trigger("reset");
@@ -210,19 +233,20 @@
           method: "GET",
           url: `http://localhost:3000/answer/${id}`,
           dataType: "json",
+          headers: { "x-access-token": localStorage.getItem("token") },
         }).done(function (data) {
           console.log(data);
           let html = "";
 
           data.forEach((item) => {
             html += ` <div class="total-question">
-       
+
       </div>
       <br /><br />
       <div class="row">
         <div class="col-sm-2">
-          <p><i class="fas fa-angle-double-up"></i></p>
-          <p>0</p>
+          <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <p>${item.vote.count}</p>
           <p><i class="fas fa-angle-double-down"></i></p>
         </div>
         <div class="col-sm-9">
@@ -232,11 +256,11 @@
             >
           </div>
           <br />
-         
+
         </div>
       </div> `;
-    });
-    $("#question2").html(html);
+          });
+          $("#question2").html(html);
         });
       }
     </script>
