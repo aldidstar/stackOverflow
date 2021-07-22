@@ -199,7 +199,7 @@
           event.preventDefault();
           let id = $(this).attr("iddata");
           localStorage.setItem("idselection", id);
-          window.location = "/index1.html";
+          window.location = "/answer.html";
         });
       });
 
@@ -212,7 +212,7 @@
        
         }).done(function (data) {
           console.log(localStorage.getItem("token"));
-          if (localStorage.getItem("token")== 'undefined') {
+          if (!localStorage.getItem("token")) {
             window.location = "/login.html";
           }
 

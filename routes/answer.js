@@ -11,8 +11,8 @@ router.get("/:QuestionId", helpers.verifyToken, function (req, res, next) {
       QuestionId: req.params.QuestionId,
     },
   })
-    .then(function (answers) {
-      res.json(answers);
+    .then(function (answer) {
+      res.json(answer);
     })
     .catch((err) => {
       res.status(500).json({ err });
@@ -24,7 +24,7 @@ router.post("/", function (req, res) {
     title: "",
     description: req.body.description,
     tag: {},
-    vote: { count: 0, voter: [] },
+    vote: { count: 0, countMin:0, voter: [] },
     QuestionId: req.body.QuestionId,
   })
     .then(function (answers) {
@@ -40,8 +40,8 @@ router.delete("/:id", function (req, res) {
     where: {
       id: req.params.id,
     },
-  }).then(function (answers) {
-    res.json(answers);
+  }).then(function (answer) {
+    res.json(answer);
   });
 });
 
@@ -56,6 +56,7 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
     if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
       answer.vote = {
         count: answer.vote.count + 1,
+        countMin: answer.vote.count - 1,
         voter: [...answer.vote.voter, { id, name }],
       };
       console.log(answer);

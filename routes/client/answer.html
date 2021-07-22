@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
-  <body onload="loadData()">
+  <body onload="questionLoad()">
     <nav
       style="border-bottom: 1px solid rgb(221, 217, 217)"
       class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
@@ -112,8 +112,8 @@
     </script>
     <script type="text/javascript">
       $(document).ready(function () {
-        loadData();
-        loadData2();
+        questionLoad();
+        answerLoad();
 
         $("#question2").on("click", ".voteup", function (e) {
           e.preventDefault();
@@ -127,7 +127,7 @@
           }).done(function (data) {
             if(data.success){
               alert("berhasil vote")
-              loadData2()
+              answerLoad()
             }
             else {
               alert(data.message)
@@ -154,7 +154,7 @@
         });
       });
 
-      function loadData() {
+      function questionLoad() {
         let id = localStorage.getItem("idselection");
 
         let html = "";
@@ -222,12 +222,12 @@
           },
         }).done(function (msg) {
           $("#form-question").trigger("reset");
-          loadData();
-          loadData2();
+          questionLoad();
+          answerLoad();
         });
       }
 
-      function loadData2() {
+      function answerLoad() {
         let id = localStorage.getItem("idselection");
         $.ajax({
           method: "GET",
