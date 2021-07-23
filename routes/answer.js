@@ -4,24 +4,22 @@ var models = require("../models/index");
 const helpers = require("../helpers/util");
 // const { json } = require('sequelize/types');
 var jwt = require("jsonwebtoken");
+const { QueryTypes } = require("sequelize");
 
-router.get("/:QuestionId", helpers.verifyToken, function (req, res, next) {
-  models.Answer.findAll({
-    where: {
-      QuestionId: req.params.QuestionId,
-    },
-    order: [
-      ['id', 'DESC']
-    ],
-   
-  })
-    .then(function (answer) {
-      res.json(answer);
-    })
-    .catch((err) => {
-      res.status(500).json({ err });
-    });
-});
+router.get(
+  "/:QuestionId",
+  helpers.verifyToken,
+  async function (req, res, next) {
+    try {
+      const answers = await models.sequelize.query(`SELECT * FROM "Answers" where "QuestionId" = ${req.params.QuestionId} order by (vote ->> 'count')::int desc`, {
+        type: QueryTypes.SELECT,
+      });
+      res.json(answers);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 router.post("/", function (req, res) {
   models.Answer.create({
@@ -51,15 +49,13 @@ router.delete("/:id", function (req, res) {
 
 router.put("/vote", helpers.verifyToken, function (req, res) {
   const { id, name } = jwt.decode(req.headers["x-access-token"]);
-  
+
   models.Answer.findOne({
     where: {
       id: req.body.idAnswer,
     },
-   
-    
   }).then((answer) => {
-    if (req.body.mode == 'up') {
+    if (req.body.mode == "up") {
       if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
         answer.vote = {
           count: answer.vote.count + 1,
@@ -71,15 +67,13 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
         res.json({
           success: true,
         });
-      } 
-      else {
+      } else {
         res.json({
           success: false,
           message: "anda sudah vote",
         });
       }
-    }
-    else if (req.body.mode == 'down')  {
+    } else if (req.body.mode == "down") {
       if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
         answer.vote = {
           count: answer.vote.count - 1,
@@ -97,13 +91,12 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
           message: "anda sudah vote",
         });
       }
-      }
-      else {
-        res.json({
-          success: false,
-          message: "gagal vote",
-        });
-      }
+    } else {
+      res.json({
+        success: false,
+        message: "gagal vote",
+      });
+    }
   });
 });
 

@@ -2,6 +2,10 @@
 <html>
   <head>
     <title><%= title %></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;1,100;1,200&display=swap" rel="stylesheet"> 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -14,7 +18,73 @@
       rel="stylesheet"
       type="text/css"
     />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Bootstrap 4 Tag Input Example</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha256-aAr2Zpq8MZ+YA/D6JtRD3xtrwpEz2IqOS+pWD/7XKIw="
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+      integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg=="
+      crossorigin="anonymous"
+    />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha256-OFRAJNoaD8L3Br5lglV7VyLRf0itmoBzWUoM+Sji4/8="
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"
+      integrity="sha512-VvWznBcyBJK71YKEKDMpZ0pCVxjNuKwApp4zLF3ul+CiflQi6aIJR+aZCP/qWsoFBA28avL5T5HA+RE+zrGQYg=="
+      crossorigin="anonymous"
+    ></script>
+
+    
+
+    <style type="text/css">
+      .bootstrap-tagsinput {
+        width: 100%;
+      }
+
+      .label-info {
+        background-color: #17a2b8;
+      }
+
+      .label {
+        display: inline-block;
+
+        padding: 0.25em 0.4em;
+
+        font-size: 75%;
+
+        font-weight: 700;
+
+        line-height: 1;
+
+        text-align: center;
+
+        white-space: nowrap;
+
+        vertical-align: baseline;
+
+        border-radius: 0.25rem;
+
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+          border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+    </style>
   </head>
 
   <body onload="loadData()">
@@ -23,7 +93,7 @@
       class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Stack Overflow</a>
+        <a style="margin-left: -15px" class="navbar-brand" href="#">Stack Overflow</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -37,29 +107,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">About</a>
-            </li>
-           
-
             
+
             <li>
-              <form id="form-search"  style="height: 35px" class="d-flex">
+              <form id="form-search" style="height: 35px" class="d-flex">
                 <input
-                  style="width: 650px"
+                  style="width: 700px" 
+
                   class="s-input s-input__search js-search-field"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                   name="title"
-                  id='title'
+                  id="title"
                 />
-                <button type="submit"  class="btn btn-success">search</button>
+                <button style="margin-left: 5px;" type="submit" class="btn btn-success" >search</button>
               </form>
             </li>
-            <br>
-         
-            
+            <br />
           </ul>
 
           <button
@@ -84,58 +149,13 @@
     <br />
 
     <div class="container-fluid">
-      <h4 class="flex--item fl1 fs-headline1 mb24">All Question</h4>
+      <h4 style="margin-left: -10px;" class="flex--item fl1 fs-headline1 mb24">All Question</h4>
       <br />
 
       <div class="total-question">
-        <div class="row">
-          <h5 class="col-9">1000 question</h5>
-          <div class="col-3">
-            <div
-              class="btn-group"
-              role="group"
-              aria-label="Basic checkbox toggle button group"
-              style="height: 27px; width: 15px"
-            >
-              <input
-                type="checkbox"
-                class="btn-check"
-                id="btncheck1"
-                autocomplete="off"
-              />
-              <label
-                style="font-size: 12px"
-                class="btn btn-outline-primary"
-                for="btncheck1"
-                >Viewer</label
-              >
-
-              <input
-                type="checkbox"
-                class="btn-check"
-                id="btncheck2"
-                autocomplete="off"
-              />
-              <label
-                style="font-size: 12px"
-                class="btn btn-outline-primary"
-                for="btncheck2"
-                >Answer</label
-              >
-
-              <input
-                type="checkbox"
-                class="btn-check"
-                id="btncheck3"
-                autocomplete="off"
-              />
-              <label
-                style="font-size: 12px"
-                class="btn btn-outline-primary"
-                for="btncheck3"
-                >Votes</label
-              >
-            </div>
+        <div style="margin-left: -50px;" class="row">
+          <h5  class="col-9">1000 question</h5>
+          
           </div>
         </div>
       </div>
@@ -167,6 +187,18 @@
           cols="80"
         >
         </textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="tag" class="form-label">Tag</label>
+
+        <input
+          type="text"
+          data-role="tagsinput"
+          name="tag"
+          class="form-control"
+          id="tag"
+        />
       </div>
       <button type="submit" class="btn btn-primary">
         <i class="fas fa-plus"></i>
@@ -208,9 +240,8 @@
         $("#form-search").submit(function (event) {
           event.preventDefault();
           search();
-          $("#question").hide()
-         
-        })
+          $("#question").hide();
+        });
 
         $("#search").on("click", ".title", function (event) {
           event.preventDefault();
@@ -218,22 +249,21 @@
           localStorage.setItem("idselection", id);
           window.location = "/answer.html";
         });
-       
+
         $("#question").on("click", ".voteup", function (e) {
           e.preventDefault();
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/question/vote`,
-            data: {idQuestion: $(this).attr("dataid"), mode: 'up'},
+            data: { idQuestion: $(this).attr("dataid"), mode: "up" },
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
-            if(data.success){
-              alert("berhasil vote")
-              loadData()
-            }
-            else {
-              alert(data.message)
+            if (data.success) {
+              alert("berhasil vote");
+              loadData();
+            } else {
+              alert(data.message);
             }
           });
         });
@@ -243,16 +273,15 @@
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/question/vote`,
-            data: {idQuestion: $(this).attr("iddata"), mode: 'down'}, 
+            data: { idQuestion: $(this).attr("iddata"), mode: "down" },
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
-            if(data.success){
-              alert("berhasil vote")
-              loadData()
-            }
-            else {
-              alert(data.message)
+            if (data.success) {
+              alert("berhasil vote");
+              loadData();
+            } else {
+              alert(data.message);
             }
           });
         });
@@ -262,16 +291,15 @@
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/question/vote`,
-            data: {idQuestion: $(this).attr("dataid"), mode: 'up'},
+            data: { idQuestion: $(this).attr("dataid"), mode: "up" },
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
-            if(data.success){
-              alert("berhasil vote")
-              search()
-            }
-            else {
-              alert(data.message)
+            if (data.success) {
+              alert("berhasil vote");
+              search();
+            } else {
+              alert(data.message);
             }
           });
         });
@@ -281,20 +309,18 @@
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/question/vote`,
-            data: {idQuestion: $(this).attr("iddata"), mode: 'down'}, 
+            data: { idQuestion: $(this).attr("iddata"), mode: "down" },
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
-            if(data.success){
-              alert("berhasil vote")
-              search()
-            }
-            else {
-              alert(data.message)
+            if (data.success) {
+              alert("berhasil vote");
+              search();
+            } else {
+              alert(data.message);
             }
           });
         });
-
       });
 
       function loadData() {
@@ -313,9 +339,9 @@
 
           data.forEach((item) => {
             html += ` 
-            <div id="border-question" class="col-sm-2">
+            <div  style="margin-left: 30px; id="border-question" class="col-sm-2">
              
-          <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <a dataid="${item.id}"  class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
           <p>${item.vote.count}</p>
           <a iddata="${item.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
           <br />
@@ -323,7 +349,7 @@
           </div>
         <div class="col-sm-9">
           <div id="list-question">
-            <a class="title" iddata = ${item.id}  href="#"><h6>${item.title}</h6></a>
+            <a  class="title" iddata = ${item.id}  href="#"><h5 >${item.title}</h5></a>
 
             <br />
 
@@ -333,28 +359,10 @@
           <div class="row">
             <div class="col-sm-9">
               <div class="tag-editor">
-                <ul class="tags">
-                  <li class="addedTag">
-                    Web Develop<span
-                     
-                      class="tagRemove"
-                      >x</span
-                    ><input type="hidden" name="tags[]" value="Web Develop" />
-                  </li>
-                  <li class="addedTag">
-                    SEO<span
-                      
-                      class="tagRemove"
-                      >x</span
-                    ><input type="hidden" name="tags[]" value="SEO" />
-                  </li>
-                 
-                </ul>
+                
               </div>
             </div>
-            <div id="user" class="col-sm-2">
-              <p>asked by user</p>
-            </div>
+            
           </div>
           <br />
         </div>`;
@@ -365,6 +373,8 @@
 
       function saveData() {
         const title = $("#title-add").val();
+        const tag = $("#tag").val();
+        
 
         $.ajax({
           method: "POST",
@@ -372,8 +382,10 @@
           data: {
             title,
             description: CKEDITOR.instances.description.getData(),
+            tag
           },
         }).done(function (msg) {
+          
           $("#form-question").trigger("reset");
           loadData();
         });
@@ -390,10 +402,10 @@
           headers: { "x-access-token": localStorage.getItem("token") },
         }).done(function (data) {
           let html = ` `;
-       
+
           // data.forEach((item) => {
-            html += ` 
-  <div id="border-question" class="col-sm-2">
+          html += ` 
+  <div   style="margin-left: 30px; id="border-question" class="col-sm-2">
     <a dataid="${data.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
           <p>${data.vote.count}</p>
           <a iddata="${data.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
@@ -401,7 +413,7 @@
           </div>
 <div class="col-sm-9">
 <div id="list-question">
-  <a class="title" iddata = ${data.id}  href="#"><h6>${data.title}</h6></a>
+  <a class="title" iddata = ${data.id}  href="#"><h5>${data.title}</h5></a>
 
   <br />
 
@@ -411,33 +423,13 @@
 <div class="row">
   <div class="col-sm-9">
     <div class="tag-editor">
-      <ul class="tags">
-        <li class="addedTag">
-          Web Develop<span
-            
-            class="tagRemove"
-            >x</span
-          ><input type="hidden" name="tags[]" value="Web Develop" />
-        </li>
-        <li class="addedTag">
-          SEO<span
-           
-            class="tagRemove"
-            >x</span
-          ><input type="hidden" name="tags[]" value="SEO" />
-        </li>
-        
-      </ul>
     </div>
-  </div>
-  <div id="user" class="col-sm-2">
-    <p>asked by user</p>
   </div>
 </div>
 <br />
 </div>`;
-$("#search").html(html);
-          });
+          $("#search").html(html);
+        });
         // });
       }
     </script>

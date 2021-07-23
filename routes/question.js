@@ -4,6 +4,8 @@ var models = require("../models/index");
 const helpers = require("../helpers/util");
 var jwt = require("jsonwebtoken");
 
+
+
 /* GET users listing. */
 router.get("/", helpers.verifyToken, function (req, res, next) {
   models.Question.findAll({
@@ -25,10 +27,11 @@ router.get("/search/question", helpers.verifyToken, function (req, res, next) {
   models.Question.findOne({
     // include    : [models.Answer],
     where: {
-      title: req.query.title
+      title: req.query.title 
       // {
         // [Sequelize.Op.iLike]: `%${req.query.title}%`
       // } 
+      
     },
     include: [models.Answer],
   })
@@ -40,11 +43,13 @@ router.get("/search/question", helpers.verifyToken, function (req, res, next) {
     });
 });
 
+
 router.post("/", function (req, res) {
+
   models.Question.create({
     title: req.body.title,
     description: req.body.description,
-    tag: {},
+    tag: req.body.tag,
     vote: { count: 0, voter: [] },
   })
     .then(function (question) {
@@ -136,3 +141,4 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
 
 
 module.exports = router;
+

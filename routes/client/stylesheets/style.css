@@ -1,6 +1,7 @@
 body {
+  font-family: 'Poppins', sans-serif;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+ 
 }
 
 a {
@@ -11,6 +12,8 @@ h4 {
   margin-left: 40px;
   margin-top: 20px;
 }
+
+
 
 .container-fluid .total-question {
   margin-left: 40px;
@@ -101,3 +104,5 @@ h1 {
 .total-question {
   border-bottom: 1px solid rgb(221, 217, 217);
 }
+
+
