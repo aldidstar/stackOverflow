@@ -40,24 +40,26 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">About</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Products</a>
-            </li>
+           
 
-            <li class="nav-item">
-              <a class="nav-link" href="#" tabindex="-1">For Team</a>
-            </li>
+            
             <li>
-              <form style="height: 35px" class="d-flex">
+              <form id="form-search"  style="height: 35px" class="d-flex">
                 <input
                   style="width: 650px"
                   class="s-input s-input__search js-search-field"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  name="title"
+                  id='title'
                 />
+                <button type="submit"  class="btn btn-success">search</button>
               </form>
             </li>
+            <br>
+         
+            
           </ul>
 
           <button
@@ -139,6 +141,7 @@
       </div>
       <br /><br />
       <div id="question" class="row"></div>
+      <div id="search" class="row"></div>
     </div>
     <br />
     <button id="btn-add" class="btn btn-primary">Add Question</button>
@@ -149,7 +152,7 @@
           required
           type="text"
           class="form-control"
-          id="title"
+          id="title-add"
           name="title"
           aria-describedby="title"
         />
@@ -201,6 +204,97 @@
           localStorage.setItem("idselection", id);
           window.location = "/answer.html";
         });
+
+        $("#form-search").submit(function (event) {
+          event.preventDefault();
+          search();
+          $("#question").hide()
+         
+        })
+
+        $("#search").on("click", ".title", function (event) {
+          event.preventDefault();
+          let id = $(this).attr("iddata");
+          localStorage.setItem("idselection", id);
+          window.location = "/answer.html";
+        });
+       
+        $("#question").on("click", ".voteup", function (e) {
+          e.preventDefault();
+          $.ajax({
+            method: "PUT",
+            url: `http://localhost:3000/question/vote`,
+            data: {idQuestion: $(this).attr("dataid"), mode: 'up'},
+            // dataType: "json",
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }).done(function (data) {
+            if(data.success){
+              alert("berhasil vote")
+              loadData()
+            }
+            else {
+              alert(data.message)
+            }
+          });
+        });
+
+        $("#question").on("click", ".votedown", function (e) {
+          e.preventDefault();
+          $.ajax({
+            method: "PUT",
+            url: `http://localhost:3000/question/vote`,
+            data: {idQuestion: $(this).attr("iddata"), mode: 'down'}, 
+            // dataType: "json",
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }).done(function (data) {
+            if(data.success){
+              alert("berhasil vote")
+              loadData()
+            }
+            else {
+              alert(data.message)
+            }
+          });
+        });
+
+        $("#search").on("click", ".voteup", function (e) {
+          e.preventDefault();
+          $.ajax({
+            method: "PUT",
+            url: `http://localhost:3000/question/vote`,
+            data: {idQuestion: $(this).attr("dataid"), mode: 'up'},
+            // dataType: "json",
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }).done(function (data) {
+            if(data.success){
+              alert("berhasil vote")
+              search()
+            }
+            else {
+              alert(data.message)
+            }
+          });
+        });
+
+        $("#search").on("click", ".votedown", function (e) {
+          e.preventDefault();
+          $.ajax({
+            method: "PUT",
+            url: `http://localhost:3000/question/vote`,
+            data: {idQuestion: $(this).attr("iddata"), mode: 'down'}, 
+            // dataType: "json",
+            headers: { "x-access-token": localStorage.getItem("token") },
+          }).done(function (data) {
+            if(data.success){
+              alert("berhasil vote")
+              search()
+            }
+            else {
+              alert(data.message)
+            }
+          });
+        });
+
       });
 
       function loadData() {
@@ -209,7 +303,6 @@
           url: "http://localhost:3000/question",
           dataType: "json",
           headers: { "x-access-token": localStorage.getItem("token") },
-       
         }).done(function (data) {
           console.log(localStorage.getItem("token"));
           if (!localStorage.getItem("token")) {
@@ -221,10 +314,13 @@
           data.forEach((item) => {
             html += ` 
             <div id="border-question" class="col-sm-2">
-          <p>0 Quesstion</p>
+             
+          <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <p>${item.vote.count}</p>
+          <a iddata="${item.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
           <br />
-          <p>0 vote</p>
-        </div>
+          <p> Answer : ${item.Answers.length}</p> 
+          </div>
         <div class="col-sm-9">
           <div id="list-question">
             <a class="title" iddata = ${item.id}  href="#"><h6>${item.title}</h6></a>
@@ -240,21 +336,19 @@
                 <ul class="tags">
                   <li class="addedTag">
                     Web Develop<span
-                      onclick="$(this).parent().remove();"
+                     
                       class="tagRemove"
                       >x</span
                     ><input type="hidden" name="tags[]" value="Web Develop" />
                   </li>
                   <li class="addedTag">
                     SEO<span
-                      onclick="$(this).parent().remove();"
+                      
                       class="tagRemove"
                       >x</span
                     ><input type="hidden" name="tags[]" value="SEO" />
                   </li>
-                  <li class="tagAdd taglist">
-                    <input type="text" id="search-field" />
-                  </li>
+                 
                 </ul>
               </div>
             </div>
@@ -270,7 +364,7 @@
       }
 
       function saveData() {
-        const title = $("#title").val();
+        const title = $("#title-add").val();
 
         $.ajax({
           method: "POST",
@@ -283,6 +377,68 @@
           $("#form-question").trigger("reset");
           loadData();
         });
+      }
+
+      function search() {
+        const title = $("#title").val();
+        $.ajax({
+          method: "GET",
+          url: "http://localhost:3000/question/search/question",
+          data: {
+            title,
+          },
+          headers: { "x-access-token": localStorage.getItem("token") },
+        }).done(function (data) {
+          let html = ` `;
+       
+          // data.forEach((item) => {
+            html += ` 
+  <div id="border-question" class="col-sm-2">
+    <a dataid="${data.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <p>${data.vote.count}</p>
+          <a iddata="${data.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
+          <p> Answer : ${data.Answers.length}</p> 
+          </div>
+<div class="col-sm-9">
+<div id="list-question">
+  <a class="title" iddata = ${data.id}  href="#"><h6>${data.title}</h6></a>
+
+  <br />
+
+  <a>${data.description}</a>
+</div>
+<br />
+<div class="row">
+  <div class="col-sm-9">
+    <div class="tag-editor">
+      <ul class="tags">
+        <li class="addedTag">
+          Web Develop<span
+            
+            class="tagRemove"
+            >x</span
+          ><input type="hidden" name="tags[]" value="Web Develop" />
+        </li>
+        <li class="addedTag">
+          SEO<span
+           
+            class="tagRemove"
+            >x</span
+          ><input type="hidden" name="tags[]" value="SEO" />
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  <div id="user" class="col-sm-2">
+    <p>asked by user</p>
+  </div>
+</div>
+<br />
+</div>`;
+$("#search").html(html);
+          });
+        // });
       }
     </script>
   </body>

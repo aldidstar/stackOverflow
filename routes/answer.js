@@ -10,6 +10,10 @@ router.get("/:QuestionId", helpers.verifyToken, function (req, res, next) {
     where: {
       QuestionId: req.params.QuestionId,
     },
+    order: [
+      ['id', 'DESC']
+    ],
+   
   })
     .then(function (answer) {
       res.json(answer);
@@ -47,13 +51,15 @@ router.delete("/:id", function (req, res) {
 
 router.put("/vote", helpers.verifyToken, function (req, res) {
   const { id, name } = jwt.decode(req.headers["x-access-token"]);
-  console.log(req.body.isUp)
+  
   models.Answer.findOne({
     where: {
       id: req.body.idAnswer,
     },
+   
+    
   }).then((answer) => {
-    if (req.body.isUp == true) {
+    if (req.body.mode == 'up') {
       if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
         answer.vote = {
           count: answer.vote.count + 1,
@@ -65,17 +71,18 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
         res.json({
           success: true,
         });
-      } else {
+      } 
+      else {
         res.json({
           success: false,
           message: "anda sudah vote",
         });
       }
     }
-    else {
+    else if (req.body.mode == 'down')  {
       if (answer.vote.voter.filter((item) => item.id == id).length == 0) {
         answer.vote = {
-          count: answer.vote.count --,
+          count: answer.vote.count - 1,
 
           voter: [...answer.vote.voter, { id, name }],
         };
@@ -90,7 +97,13 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
           message: "anda sudah vote",
         });
       }
-    }
+      }
+      else {
+        res.json({
+          success: false,
+          message: "gagal vote",
+        });
+      }
   });
 });
 

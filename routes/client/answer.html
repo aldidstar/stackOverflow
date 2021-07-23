@@ -18,7 +18,7 @@
   </head>
 
   <body onload="questionLoad()">
-    <nav
+  <nav
       style="border-bottom: 1px solid rgb(221, 217, 217)"
       class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
     >
@@ -40,24 +40,26 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">About</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Products</a>
-            </li>
+           
 
-            <li class="nav-item">
-              <a class="nav-link" href="#" tabindex="-1">For Team</a>
-            </li>
+            
             <li>
-              <form style="height: 35px" class="d-flex">
+              <form id="form-search"  style="height: 35px" class="d-flex">
                 <input
                   style="width: 650px"
                   class="s-input s-input__search js-search-field"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  name="title"
+                  id='title'
                 />
+                <button type="submit"  class="btn btn-success">search</button>
               </form>
             </li>
+            <br>
+         
+            
           </ul>
 
           <button
@@ -81,10 +83,10 @@
 
     <br />
 
-    <div id="question1" class="container-fluid"><br /><br /></div>
-    <br />
-    <p>25 Answer</p>
-
+    <div id="question1" class="container-fluid"><br /><br />
+   
+  </div>
+  <br />
     <div id="question2" class="container-fluid"><br /><br /></div>
     <button id="btn-add" class="btn btn-primary">Add Answer</button>
     <form id="form-question" style="display: none">
@@ -120,7 +122,7 @@
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/answer/vote`,
-            data: {idAnswer: $(this).attr("dataid"), isUp: true},
+            data: {idAnswer: $(this).attr("dataid"), mode: 'up'},
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
@@ -141,7 +143,7 @@
           $.ajax({
             method: "PUT",
             url: `http://localhost:3000/answer/vote`,
-            data: {idAnswer: $(this).attr("iddata"), isUp: false}, 
+            data: {idAnswer: $(this).attr("iddata"), mode: 'down'}, 
             // dataType: "json",
             headers: { "x-access-token": localStorage.getItem("token") },
           }).done(function (data) {
@@ -193,39 +195,36 @@
       </div>
       <br /><br />
       <div class="row">
-        <div class="col-sm-2">
-          <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
-          <p>${item.id}</p>
-          <a iddata="${item.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
-        </div>
+       
         <div class="col-sm-9">
           <div class="list-question">
-            <a
-              >${item.description}</a
-            >
+            <a class="title" iddata = ${item.id}  href="#"><h6>${item.title}</h6></a>
+
+            <br />
+
+            <a>${item.description}</a>
           </div>
           <br />
           <div class="tag-editor1">
             <ul class="tags">
               <li class="addedTag">
                 Web Develop<span
-                  onclick="$(this).parent().remove();"
+                 
                   class="tagRemove"
                   >x</span
                 ><input type="hidden" name="tags[]" value="Web Develop" />
               </li>
               <li class="addedTag">
-                SEO<span onclick="$(this).parent().remove();" class="tagRemove"
+                SEO<span  class="tagRemove"
                   >x</span
                 ><input type="hidden" name="tags[]" value="SEO" />
               </li>
-              <li class="tagAdd taglist">
-                <input type="text" id="search-field" />
-              </li>
+            
             </ul>
           </div>
         </div>
-      </div>`;
+      </div>
+      <p> Answer : ${item.Answers.length}</p>`;
           // });
           $("#question1").html(html);
         });
@@ -259,7 +258,8 @@
           let html = "";
 
           data.forEach((item) => {
-            html += ` <div class="total-question">
+            html += `  
+            <div class="total-question">
 
       </div>
       <br /><br />
