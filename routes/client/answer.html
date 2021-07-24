@@ -136,29 +136,26 @@
           </ul>
 
           <button
-            style="margin-right: 10px"
-            class="btn btn-outline-primary"
-            type="button"
+          style="margin-right: 10px"
+          class="btn btn-secondary"
+          type="button"
+          id="logout"
+        >
+          <a style="text-decoration: none; color: white" href="/login.html"
+            >Logout</a
           >
-            <a style="text-decoration: none; color: blue" href="/login.html"
-              >Login</a
-            >
-          </button>
+        </button>
 
-          <button class="btn btn-primary" type="button">
-            <a style="text-decoration: none; color: white" href="/register.html"
-              >Signup</a
-            >
-          </button>
+         
         </div>
       </div>
     </nav>
 
     <br />
 
-    <div style="overflow: hidden"  id="question1" class="container-fluid"><br /><br /></div>
+    <div id="question" class="container-fluid"><br /><br /></div>
     <br />
-    <div id="question2" class="container-fluid"><br /><br /></div>
+    <div id="answer" class="container-fluid"><br /><br /></div>
     <br />
     <button id="btn-add" class="btn btn-primary">Add Answer</button>
     <form id="form-question" style="display: none">
@@ -188,8 +185,11 @@
       $(document).ready(function () {
         questionLoad();
         answerLoad();
-
-        $("#question2").on("click", ".voteup", function (e) {
+        $("#logout").click(function(){
+          window.location = "/login.html";
+          localStorage.clear();
+        })
+        $("#answer").on("click", ".voteup", function (e) {
           e.preventDefault();
           $.ajax({
             method: "PUT",
@@ -207,7 +207,7 @@
           });
         });
 
-        $("#question2").on("click", ".votedown", function (e) {
+        $("#answer").on("click", ".votedown", function (e) {
           e.preventDefault();
           $.ajax({
             method: "PUT",
@@ -255,8 +255,10 @@
           headers: { "x-access-token": localStorage.getItem("token") },
         }).done(function (item) {
           // data.forEach((item) => {
-
-          html += ` <div  class="total-question">
+            if (!localStorage.getItem("token")) {
+            window.location = "/login.html";
+          }
+          html += ` 
         <h5 class="col-sm-11">
 
         </h5>
@@ -269,15 +271,12 @@
             <a>${item.description}</a>
           </div>
           <br />
-         
-        </div>
-   
-      <br />
+     
 
       <p> Answer : ${item.Answers.length}</p>
-      <br />`;
+      `;
           // });
-          $("#question1").html(html);
+          $("#question").html(html);
         });
       }
 
@@ -305,12 +304,15 @@
           dataType: "json",
           headers: { "x-access-token": localStorage.getItem("token") },
         }).done(function (data) {
-          console.log(data);
+         
+          if (!localStorage.getItem("token")) {
+            window.location = "/login.html";
+          }
           let html = "";
 
           data.forEach((item) => {
             html += `  
-            <div class="total-question">
+            <div  class="total-question">
 
       </div>
       <br /><br />
@@ -331,7 +333,7 @@
         </div>
       </div> `;
           });
-          $("#question2").html(html);
+          $("#answer").html(html);
         });
       }
     </script>

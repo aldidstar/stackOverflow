@@ -3,16 +3,12 @@ var router = express.Router();
 var models = require("../models/index");
 const helpers = require("../helpers/util");
 var jwt = require("jsonwebtoken");
-
-
+var { Op } = require("sequelize");
 
 /* GET users listing. */
 router.get("/", helpers.verifyToken, function (req, res, next) {
   models.Question.findAll({
-    
-    order: [
-      ['id', 'DESC']
-    ],
+    order: [["id", "DESC"]],
     include: [models.Answer],
   })
     .then(function (questions) {
@@ -24,15 +20,22 @@ router.get("/", helpers.verifyToken, function (req, res, next) {
 });
 
 router.get("/search/question", helpers.verifyToken, function (req, res, next) {
-  models.Question.findOne({
-    // include    : [models.Answer],
+  models.Question.findAll({
     where: {
-      title: req.query.title 
-      // {
-        // [Sequelize.Op.iLike]: `%${req.query.title}%`
-      // } 
-      
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: `%${req.query.title}%`,
+          },
+        },
+        {
+          tag: {
+            [Op.iLike]: `%${req.query.title}%`,
+          },
+        },
+      ],
     },
+
     include: [models.Answer],
   })
     .then(function (questions) {
@@ -43,9 +46,7 @@ router.get("/search/question", helpers.verifyToken, function (req, res, next) {
     });
 });
 
-
 router.post("/", function (req, res) {
-
   models.Question.create({
     title: req.body.title,
     description: req.body.description,
@@ -83,15 +84,13 @@ router.get("/:id", helpers.verifyToken, function (req, res) {
 
 router.put("/vote", helpers.verifyToken, function (req, res) {
   const { id, name } = jwt.decode(req.headers["x-access-token"]);
-  
+
   models.Question.findOne({
     where: {
       id: req.body.idQuestion,
     },
-   
-    
   }).then((question) => {
-    if (req.body.mode == 'up') {
+    if (req.body.mode == "up") {
       if (question.vote.voter.filter((item) => item.id == id).length == 0) {
         question.vote = {
           count: question.vote.count + 1,
@@ -103,15 +102,13 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
         res.json({
           success: true,
         });
-      } 
-      else {
+      } else {
         res.json({
           success: false,
           message: "anda sudah vote",
         });
       }
-    }
-    else if (req.body.mode == 'down')  {
+    } else if (req.body.mode == "down") {
       if (question.vote.voter.filter((item) => item.id == id).length == 0) {
         question.vote = {
           count: question.vote.count - 1,
@@ -129,16 +126,13 @@ router.put("/vote", helpers.verifyToken, function (req, res) {
           message: "anda sudah vote",
         });
       }
-      }
-      else {
-        res.json({
-          success: false,
-          message: "gagal vote",
-        });
-      }
+    } else {
+      res.json({
+        success: false,
+        message: "gagal vote",
+      });
+    }
   });
 });
 
-
 module.exports = router;
-

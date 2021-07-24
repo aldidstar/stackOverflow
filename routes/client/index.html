@@ -129,19 +129,16 @@
 
           <button
             style="margin-right: 10px"
-            class="btn btn-outline-primary"
+            class="btn btn-secondary"
             type="button"
+            id="logout"
           >
-            <a style="text-decoration: none; color: blue" href="/login.html"
-              >Login</a
+            <a style="text-decoration: none; color: white" href="/login.html"
+              >Logout</a
             >
           </button>
 
-          <button class="btn btn-primary" type="button">
-            <a style="text-decoration: none; color: white" href="/register.html"
-              >Signup</a
-            >
-          </button>
+         
         </div>
       </div>
     </nav>
@@ -149,17 +146,11 @@
     <br />
 
     <div class="container-fluid">
-      <h4 style="margin-left: -10px;" class="flex--item fl1 fs-headline1 mb24">All Question</h4>
-      <br />
+      <h4 id="all-question" style="margin-left: -10px;" class="flex--item fl1 fs-headline1 mb24">All Question</h4>
+      
 
-      <div class="total-question">
-        <div style="margin-left: -50px;" class="row">
-          <h5  class="col-9">1000 question</h5>
-          
-          </div>
-        </div>
-      </div>
-      <br /><br />
+      
+      <br />
       <div id="question" class="row"></div>
       <div id="search" class="row"></div>
     </div>
@@ -173,7 +164,7 @@
           type="text"
           class="form-control"
           id="title-add"
-          name="title"
+          name="title-add"
           aria-describedby="title"
         />
       </div>
@@ -214,6 +205,10 @@
     <script type="text/javascript">
       $(document).ready(function () {
         loadData();
+        $("#logout").click(function(){
+          window.location = "/login.html";
+          localStorage.clear();
+        })
         $("#form-question").submit(function (event) {
           event.preventDefault();
           saveData();
@@ -241,6 +236,7 @@
           event.preventDefault();
           search();
           $("#question").hide();
+          $("#all-question").hide()
         });
 
         $("#search").on("click", ".title", function (event) {
@@ -335,7 +331,14 @@
             window.location = "/login.html";
           }
 
-          let html = "";
+          let html = `<div style="margin-bottom: 50px;" class="total-question">
+        <div style="margin-left: -50px; " class="row">
+          <h5 id="total" class="col-9"> Question : ${data.length}</h5>
+          
+          </div>
+        </div>
+        
+     `;
 
           data.forEach((item) => {
             html += ` 
@@ -375,7 +378,6 @@
         const title = $("#title-add").val();
         const tag = $("#tag").val();
         
-
         $.ajax({
           method: "POST",
           url: "http://localhost:3000/question",
@@ -398,26 +400,32 @@
           url: "http://localhost:3000/question/search/question",
           data: {
             title,
+        
           },
           headers: { "x-access-token": localStorage.getItem("token") },
         }).done(function (data) {
-          let html = ` `;
+          let html = ` <div style="margin-bottom: 50px;" class="total-question">
+        <div style="margin-left: -50px; " class="row">
+          <h5 id="total" class="col-9">Question : ${data.length}</h5>
+          
+          </div>
+        </div> `;
 
-          // data.forEach((item) => {
+          data.forEach((item) => {
           html += ` 
   <div   style="margin-left: 30px; id="border-question" class="col-sm-2">
-    <a dataid="${data.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
-          <p>${data.vote.count}</p>
-          <a iddata="${data.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
-          <p> Answer : ${data.Answers.length}</p> 
+    <a dataid="${item.id}" class="voteup" href="#"><i  class="fas fa-angle-double-up"></i></a>
+          <p>${item.vote.count}</p>
+          <a iddata="${item.id}" class="votedown" href="#"><i  class="fas fa-angle-double-down"></i></a>
+          <p> Answer : ${item.Answers.length}</p> 
           </div>
 <div class="col-sm-9">
 <div id="list-question">
-  <a class="title" iddata = ${data.id}  href="#"><h5>${data.title}</h5></a>
+  <a class="title" iddata = ${item.id}  href="#"><h5>${item.title}</h5></a>
 
   <br />
 
-  <a>${data.description}</a>
+  <a>${item.description}</a>
 </div>
 <br />
 <div class="row">
@@ -430,7 +438,7 @@
 </div>`;
           $("#search").html(html);
         });
-        // });
+        });
       }
     </script>
   </body>
